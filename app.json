@@ -17,6 +17,12 @@
           "backgroundColor": "#208AEF"
         }
       ],
+      [
+        "expo-contacts",
+        {
+          "contactsPermission": "Allow KhataBook to access your contacts so you can add customers and suppliers quickly."
+        }
+      ],
       "expo-secure-store"
     ],
     "experiments": {
@@ -24,4 +30,4 @@
       "reactCompiler": true
     }
   }
-} 
+}

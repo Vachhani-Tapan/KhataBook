@@ -7,15 +7,24 @@ async function request(method, path, body) {
   const headers = { 'Content-Type': 'application/json' };
   if (token) headers.Authorization = `Bearer ${token}`;
 
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 15000); // 15 seconds
+
   let res;
   try {
     res = await fetch(`${API_URL}${path}`, {
       method,
       headers,
       body: body ? JSON.stringify(body) : undefined,
+      signal: controller.signal,
     });
   } catch (err) {
+    if (err.name === 'AbortError') {
+      throw new Error('Server is taking too long. Check that the backend is running.');
+    }
     throw new Error('Cannot reach the server. Check your internet and Wi-Fi.');
+  } finally {
+    clearTimeout(timer);
   }
 
   const data = await res.json().catch(() => ({}));
